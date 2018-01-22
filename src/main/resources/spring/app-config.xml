@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:property-placeholder location="classpath:service.properties"/>
+
+    <context:component-scan base-package="com.hengkang.app.mybatis"/>
+    <context:annotation-config/>
+
+    <!-- redisson begin -->
+    <bean id="codec" class="org.redisson.codec.JsonJacksonCodec"/>
+    <bean class="com.hengkang.app.utils.SpringContextHolder"/>
+
+    <bean id="redissonOperator" class="com.hengkang.app.utils.RedissonOperator" destroy-method="close">
+        <!-- host -->
+        <constructor-arg index="0" value="${redis.host}"/>
+        <!-- port -->
+        <constructor-arg index="1" value="${redis.port}"/>
+        <!-- password -->
+        <constructor-arg index="2" value="${redis.password}"/>
+        <!-- timeOut -->
+        <constructor-arg index="3" value="${redis.timeout}"/>
+        <!-- slaves -->
+        <constructor-arg index="4" value="${redis.slaves}"/>
+        <!-- type -->
+        <constructor-arg index="5" value="${redis.type}"/>
+        <property name="codec" ref="codec"/>
+    </bean>
+    <!-- redisson end -->
+    <!-- 开启@AspectJ AOP代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <import resource="classpath*:spring/app-config-mybatis.xml"/>
+</beans>
