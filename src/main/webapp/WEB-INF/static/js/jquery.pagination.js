@@ -1,6 +1,6 @@
 jQuery.fn.pagination = function(maxentries, opts) {
 	opts = jQuery.extend({
-				items_per_page : 10, // 每页显示多少条记录
+				items_per_page : 20, // 每页显示多少条记录
 				current_page : 0,      //当前页码
 				num_display_entries : 4, // 中间显示页码的个数
 				num_edge_entries : 2, // 末尾显示页码的个数
@@ -156,7 +156,7 @@ jQuery.fn.pagination = function(maxentries, opts) {
 		// 当前页
 		var current_page = opts.current_page;
 		maxentries = ( maxentries < 0) ? 0 : maxentries;
-		opts.items_per_page = (!opts.items_per_page || opts.items_per_page < 0)
+		opts.items_per_page = (!opts.items_per_page || opts.items_per_page <= 0)
 				? 1
 				: opts.items_per_page;
 		var panel = jQuery(this),

@@ -45,7 +45,7 @@ public class SmsController {
     private final Integer userid = 11;
     private final String possword = "fjhb123";
 
-    private final int pageSize = 30;
+    private final int pageSize = 20;
 
     @RequestMapping("login")
     public String login() {
@@ -78,15 +78,15 @@ public class SmsController {
     public String summery(HttpSession session, ModelMap map, Integer page, String date) {
         Object userid = session.getAttribute("userid");
         if (userid != null) {
-            if (page == null) page = 1;
+            if (page == null || page == 0) page = 1;
             int limit = page * pageSize;
             int start = (page - 1) * pageSize;
             PageHelper.startPage(page, pageSize);
             String sql = "select * from yssmgw_direct_ng.ys_sms_summary";
             if (StringUtils.isNotEmpty(date))
-                sql += "where sdate='" + date + "'";
+                sql += " where sdate='" + date + "'";
             else
-                sql += " order by to_date(sdate,'yyyymmdd') desc";
+                sql += " order by to_date(sdate,'yyyymmdd')  desc nulls last";
             List<YsSmsSummary> ysSmsSummaries = summaryMapper.selectByParam(sql);
             if (ysSmsSummaries.size() > 0) {
                 PageInfo<YsSmsSummary> infos = new PageInfo<>(ysSmsSummaries);
@@ -97,8 +97,9 @@ public class SmsController {
                 map.put("start", start);
                 map.put("limit", limit);
             }
+            return "summary";
         }
-        return "summary";
+        return "login";
     }
 
 
@@ -106,7 +107,7 @@ public class SmsController {
     public String staffic(HttpSession session, ModelMap map, String date, Integer page) {
         Object userid = session.getAttribute("userid");
         if (userid != null) {
-            if (page == null) page = 1;
+            if (page == null || page == 0) page = 1;
             int limit = page * pageSize;
             int start = (page - 1) * pageSize;
             PageHelper.startPage(page, limit);
@@ -125,8 +126,9 @@ public class SmsController {
                 map.put("start", start);
                 map.put("limit", limit);
             }
+            return "traffic";
         }
-        return "traffic";
+        return "login";
     }
 
 
@@ -134,7 +136,7 @@ public class SmsController {
     public String mtsend(HttpSession session, ModelMap map, String date, String phone, Integer page) {
         Object userid = session.getAttribute("userid");
         if (userid != null) {
-            if (page == null) page = 1;
+            if (page == null || page == 0) page = 1;
             int limit = page * pageSize;
             int start = (page - 1) * pageSize;
             PageHelper.startPage(page, limit);
@@ -153,15 +155,16 @@ public class SmsController {
                 map.put("start", start);
                 map.put("limit", limit);
             }
+            return "mtsend";
         }
-        return "mtsend";
+        return "login";
     }
 
     @RequestMapping("ysmt")
     public String ysmt(HttpSession session, ModelMap map, String date, String phone, Integer page) {
         Object userid = session.getAttribute("userid");
         if (userid != null) {
-            if (page == null) page = 1;
+            if (page == null || page == 0) page = 1;
             int limit = page * pageSize;
             int start = (page - 1) * pageSize;
             PageHelper.startPage(page, limit);
@@ -180,8 +183,9 @@ public class SmsController {
                 map.put("start", start);
                 map.put("limit", limit);
             }
+            return "ysmt";
         }
-        return "ysmt";
+        return "login";
     }
 
 }

@@ -118,13 +118,17 @@
         $(this).parent($(".select-list")).siblings($(".select-title")).find("span").text(txt);
     })
 //
-//    $('.pagination').pagination(100, {
-//        callback: function (page) {
+    $('.pagination').pagination(${total}, {
+
+        display_msg: true,
+        setPageNo: false,
+        current_page:${page-1},
+        callback: function (page) {
+            page += 1;
 //            alert(page);
-//        },
-//        display_msg: true,
-//        setPageNo: true
-//    });
+            location = "summary?page=" + page;
+        }
+    });
 
     $("tbody").find("tr:odd").css("backgroundColor", "#eff6fa");
 

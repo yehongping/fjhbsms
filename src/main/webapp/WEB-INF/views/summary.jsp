@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
-<%@ include file="../static/include/taglib.jsp"%>
+<%@ include file="../static/include/taglib.jsp" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -118,13 +118,17 @@
         $(this).parent($(".select-list")).siblings($(".select-title")).find("span").text(txt);
     })
 
-    <%--$('.pagination').pagination(${total}, {--%>
-        <%--callback: function (page) {--%>
-            <%--alert(page);--%>
-        <%--},--%>
-        <%--display_msg: true,--%>
-        <%--setPageNo: true--%>
-    <%--});--%>
+    $('.pagination').pagination(${total}, {
+
+        display_msg: true,
+        setPageNo: false,
+        current_page:${page-1},
+        callback: function (page) {
+            page += 1;
+//            alert(page);
+            location = "summary?page=" + page;
+        }
+    });
 
     $("tbody").find("tr:odd").css("backgroundColor", "#eff6fa");
 
