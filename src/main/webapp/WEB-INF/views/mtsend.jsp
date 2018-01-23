@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
-<%@ include file="../static/include/taglib.jsp"%>
+<%@ include file="../static/include/taglib.jsp" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -10,57 +10,42 @@
     <link rel="stylesheet" href="${ctxStatic}/css/WdatePicker.css"/>
 </head>
 <body>
-<div class="title"><h2>信息管理>表01</h2></div>
+<div class="title"><h2>信息管理>联诚侧宇顺联通、移动电信营销端口日发送短信</h2></div>
 <div class="query">
     <div class="query-conditions ue-clear">
-        <div class="conditions name ue-clear">
-            <label>流程名称：</label>
-            <div class="select-wrap">
-                <div class="select-title ue-clear"><span>请选择</span><i class="icon"></i></div>
-                <ul class="select-list">
-                    <li>呵呵</li>
-                    <li>哈哈</li>
-                    <li>嘻嘻</li>
-                </ul>
-            </div>
-        </div>
-        <div class="conditions operate-time ue-clear">
-            <label>操作时间：</label>
-            <div class="select-wrap">
-                <div class="select-title ue-clear"><span>大于或等于</span><i class="icon"></i></div>
-                <ul class="select-list">
-                    <li>呵呵</li>
-                    <li>哈哈</li>
-                    <li>嘻嘻</li>
-                </ul>
-            </div>
-            <div class="input-box ue-clear">
-                <input type="text">
-                <span>小时</span>
-            </div>
-        </div>
+        <%--<div class="conditions operate-time ue-clear">--%>
+        <%--<label>操作时间：</label>--%>
+        <%--<div class="select-wrap">--%>
+        <%--<div class="select-title ue-clear"><span>大于或等于</span><i class="icon"></i></div>--%>
+        <%--<ul class="select-list">--%>
+        <%--<li>呵呵</li>--%>
+        <%--<li>哈哈</li>--%>
+        <%--<li>嘻嘻</li>--%>
+        <%--</ul>--%>
+        <%--</div>--%>
+        <%--<div class="input-box ue-clear">--%>
+        <%--<input type="text">--%>
+        <%--<span>小时</span>--%>
+        <%--</div>--%>
+        <%--</div>--%>
         <div class="conditions time ue-clear">
             <label>时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间：</label>
             <div class="time-select">
-                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="开始时间">
-                <i class="icon"></i>
-            </div>
-            <span class="line">-</span>
-            <div class="time-select">
-                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="开始时间">
+                <input type="text" onfocus="WdatePicker({$dpPath:'${ctxStatic}/js/',dateFmt:'yyyyMMdd'})" placeholder="开始时间" id="date" value="${date}">
                 <i class="icon"></i>
             </div>
         </div>
         <div class="conditions staff ue-clear">
-            <label>人&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;员：</label>
-            <input type="text" placeholder="可以直接输入或选择">
-            <a href="javascript:;" class="staff-select">选择</a>
+            <label>手机号：</label>
+            <input type="text" placeholder="可以直接输入手机号" id="phone" value="${phone}">
+            <%--<a href="javascript:;" class="staff-select">选择</a>--%>
+        </div>
+        <div class="query-btn ue-clear">
+            <a onclick="searchA()" class="confirm">查询</a>
+            <a onclick="clearA()" class="clear">清空条件</a>
         </div>
     </div>
-    <div class="query-btn ue-clear">
-        <a href="javascript:;" class="confirm">查询</a>
-        <a href="javascript:;" class="clear">清空条件</a>
-    </div>
+
 </div>
 <div class="table-box">
     <table>
@@ -94,13 +79,8 @@
     </table>
 </div>
 <div class="pagination ue-clear">
-    <div class="goto"><span class="text">转到第</span><input type="text"><span class="page">页</span><a href="javascript:;">转</a>
-    </div>
-    <div class="pagin-list"><span class="current prev">&lt;&nbsp;上一页</span><span class="current">1</span><a
-            href="javascript:;">2</a><a href="javascript:;">3</a><a href="javascript:;">4</a><span>...</span><a
-            href="javascript:;">9</a><a href="javascript:;">10</a><a href="javascript:;" class="next">下一页&nbsp;&gt;</a>
-    </div>
-    <div class="pxofy">显示第&nbsp;${start+1}&nbsp;条到&nbsp;${limit}&nbsp;条记录，总共&nbsp;${total}&nbsp;条</div>
+    <div class="goto"></div>
+    <div class="pxofy"></div>
 </div>
 </body>
 <script type="text/javascript" src="${ctxStatic}/js/jquery.js"></script>
@@ -126,12 +106,29 @@
         callback: function (page) {
             page += 1;
 //            alert(page);
-            location = "summary?page=" + page;
+            location = "mtsend?page=" + page + "&date=${date}&pageSize=${pageSize}";
         }
     });
 
     $("tbody").find("tr:odd").css("backgroundColor", "#eff6fa");
 
     showRemind('input[type=text], textarea', 'placeholder');
+
+    function searchA() {
+        var regPhone = /^1[0-9]{10}$/;
+        var date = document.getElementById("date").value;
+        var phone = document.getElementById("phone").value;
+        if(regPhone.test(phone)){
+        location = "mtsend?page=${page}&date="+ date + "&phone=" + phone +"&pageSize=${pageSize}";
+        }
+        else if (!regPhone.test(phone) && phone != "") {
+            alert("手机号码格式不正常！");
+        }
+    }
+
+    function clearA() {
+        document.getElementById("getdate").value = "";
+        document.getElementById("phone").value = "";
+    }
 </script>
 </html>

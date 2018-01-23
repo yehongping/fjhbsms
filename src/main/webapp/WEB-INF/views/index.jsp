@@ -32,10 +32,10 @@
                    <li class="konwledge current hasChild" style="border-color: rgb(219, 233, 241);">
                         <div class="nav-header"><a href="javascript:;" class="ue-clear"><span>信息管理</span><i class="icon"></i></a></div>
                         <ul class="subnav">
-                            <li><a href="javascript:;" date-src="summary">表01</a></li>
-                            <li><a href="javascript:;" date-src="traffic">表02</a></li>
-                            <li><a href="javascript:;" date-src="mtsend">表03</a></li>
-                            <li><a href="javascript:;" date-src="ysmt">表04</a></li>
+                            <li><a href="javascript:;" date-src="summary">腾讯端口发送统计</a></li>
+                            <li><a href="javascript:;" date-src="traffic">联诚端口发送统计</a></li>
+                            <li><a href="javascript:;" date-src="mtsend">联诚侧宇顺联通、移动电信营销端口日发送短信</a></li>
+                            <li><a href="javascript:;" date-src="ysmt">宇顺移动电信功能性端口统计</a></li>
                         </ul>
                     </li>
              </ul>
