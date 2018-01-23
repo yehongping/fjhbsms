@@ -7,7 +7,7 @@
     <groupId>fjhbsms</groupId>
     <artifactId>fjhbsms</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>fjhb_sms</name>
+    <name>fjhbsms</name>
 
     <properties>
         <spring.version>4.0.9.RELEASE</spring.version>
@@ -294,8 +294,8 @@
                 <version>3.3</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <!-- war 打包插件, 设定war包名称不带版本号 -->
