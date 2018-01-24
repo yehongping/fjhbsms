@@ -642,4 +642,34 @@ public class Mtsend_Info {
     public void setLinkid(Integer linkid) {
         this.linkid = linkid;
     }
+
+    private String timestr1;
+
+    private String timestr2;
+
+    private String timestr3;
+
+    public String getTimestr1() {
+        return timestr1;
+    }
+
+    public void setTimestr1(String timestr1) {
+        this.timestr1 = timestr1;
+    }
+
+    public String getTimestr2() {
+        return timestr2;
+    }
+
+    public void setTimestr2(String timestr2) {
+        this.timestr2 = timestr2;
+    }
+
+    public String getTimestr3() {
+        return timestr3;
+    }
+
+    public void setTimestr3(String timestr3) {
+        this.timestr3 = timestr3;
+    }
 }

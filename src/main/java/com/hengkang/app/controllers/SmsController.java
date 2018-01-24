@@ -123,7 +123,7 @@ public class SmsController {
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
-                sql += "where STATDATE ='" + date + "'";
+                sql += " where STATDATE ='" + date + "'";
             } else
                 sql += " order by to_date(statdate,'yyyymmdd') desc nulls last";
             List<Traffic_Statistics> traffic_statistics = trafficMapper.selectByParam(sql);
@@ -132,7 +132,7 @@ public class SmsController {
                 map.put("pages", infos.getPages());
                 map.put("page", infos.getPageNum());
                 map.put("total", infos.getTotal());
-                map.put("info", infos.getList());
+                map.put("infoList", infos.getList());
                 map.put("start", start);
                 map.put("limit", limit);
                 map.put("pageSize", pageSize);
@@ -157,7 +157,7 @@ public class SmsController {
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
             PageHelper.startPage(page, pageSize);
-            String sql = "select * from HKSMGATEWAY_SMS.mtsend_info";
+            String sql = "select oidnew,to_char(putintime,'yyyy-mm-dd HH:mi:ss') timestr,putintime,phone,msgcont,uc,channelid,pri,pknum,pktotal,state,feenum,submitmsgid,rptstate,rptinfo,to_char(rptrecvtime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(submittime,'yyyy-mm-dd HH:mi:ss') timestr4,chpri,linkid from HKSMGATEWAY_SMS.mtsend_info";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
                 sql += date;
@@ -170,7 +170,7 @@ public class SmsController {
                 map.put("pages", infos.getPages());
                 map.put("page", infos.getPageNum());
                 map.put("total", infos.getTotal());
-                map.put("info", infos.getList());
+                map.put("infoList", infos.getList());
                 map.put("start", start);
                 map.put("limit", limit);
                 map.put("pageSize", pageSize);
@@ -195,7 +195,7 @@ public class SmsController {
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
             PageHelper.startPage(page, pageSize);
-            String sql = "select * from ys_sms_mt";
+            String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3,to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr4 from ys_sms_mt";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
                 sql += "_" + date;
@@ -208,7 +208,7 @@ public class SmsController {
                 map.put("pages", infos.getPages());
                 map.put("page", infos.getPageNum());
                 map.put("total", infos.getTotal());
-                map.put("info", infos.getList());
+                map.put("infoList", infos.getList());
                 map.put("start", start);
                 map.put("limit", limit);
                 map.put("pageSize", pageSize);

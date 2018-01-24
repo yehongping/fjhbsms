@@ -53,11 +53,19 @@
         <thead>
         <tr>
             <th class="num">序号</th>
+            <th >端口</th>
             <th class="name">发送号码</th>
             <th class="process">短信内容</th>
             <th class="node">长短信编号</th>
-            <th class="time">长短信数量</th>
-            <th class="operate">统计日期</th>
+            <th class="time">SPNUMBER</th>
+            <th class="time">submtresp响应id</th>
+            <th class="time">发送时间</th>
+            <th class="time">submtresp响应时间</th>
+            <th class="time">状态报告时间</th>
+            <th class="time">腾讯响应状态报告时间</th>
+            <%--<th class="time">运营商</th>--%>
+            <th class="time">状态</th>
+            <th class="operate">状态报告时间</th>
         </tr>
         </thead>
         <tbody>
@@ -69,11 +77,22 @@
                 <tr style="background-color: rgb(239, 246, 250);">
             </c:if>
             <td class="num">${i.index+1+start}</td>
-            <td class="name">${info.srcPhone}</td>
-            <td class="process">${info.num}</td>
-            <td class="node">${info.rnum}</td>
-            <td class="time">${info.rsnum}</td>
-            <td class="operate">${info.sdate}</td>
+            <td class="time">${info.userid}</td>
+            <td class="name">${info.dstPhone}</td>
+            <td class="process">${info.sms}</td>
+            <td class="node">${info.pksessioinlog}</td>
+            <td class="time">${info.pktotal}</td>
+            <td class="time">${info.pknumber}</td>
+            <td class="time">${info.msgid}</td>
+            <td class="time">${info.timestr1}</td>
+            <td class="time">${info.timestr2}</td>
+            <td class="time">${info.timestr3}</td>
+            <td class="time">${info.respmsgid}</td>
+            <td class="time">${info.state}</td>
+            <td class="time">${info.timestr4}</td>
+            <%--<td class="time"><c:if test="${info.type eq 1}">移动</c:if><c:if test="${info.type eq 2}">电信</c:if><c:if test="${empty info.type}">未知</c:if></td>--%>
+            <td class="time">${info.state}</td>
+            <td class="operate">${info.reportrespTime}</td>
             </tr>
         </c:forEach>
         </tbody>

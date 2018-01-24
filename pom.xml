@@ -227,13 +227,12 @@
         </dependency>
     </dependencies>
 
-    <!-- repository -->
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>ylz local repository</id>-->
-            <!--<url>http://61.154.12.215:9000/nexus/content/groups/public</url>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+        <repository>
+            <id>ylz local repository</id>
+            <url>http://61.154.12.215:9000/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
 
     <profiles>
         <profile>

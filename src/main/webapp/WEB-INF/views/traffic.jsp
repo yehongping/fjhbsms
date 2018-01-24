@@ -33,10 +33,16 @@
         <thead>
         <tr>
             <th class="num">序号</th>
-            <th class="name">端口</th>
-            <th class="process">发送总数</th>
-            <th class="node">状态报告总数</th>
-            <th class="time">成功状态报告总数</th>
+            <th class="name">发送类型</th>
+            <th class="name">频道号</th>
+            <th class="name">类型</th>
+            <th class="process">运营商</th>
+            <th class="node">登录ID</th>
+            <th class="time">企业ID</th>
+            <th class="time">发送数量</th>
+            <th class="time">计费数量</th>
+            <th class="time">成功数量</th>
+            <th class="time">失败数量</th>
             <th class="operate">统计日期</th>
         </tr>
         </thead>
@@ -49,11 +55,16 @@
                 <tr style="background-color: rgb(239, 246, 250);">
             </c:if>
             <td class="num">${i.index+1+start}</td>
-            <td class="name">${info.srcPhone}</td>
-            <td class="process">${info.num}</td>
-            <td class="node">${info.rnum}</td>
-            <td class="time">${info.rsnum}</td>
-            <td class="operate">${info.sdate}</td>
+            <th class="name"><c:if test="${info.chtype eq 0}">短信</c:if><c:if test="${info.chtype eq 1}">彩信</c:if><c:if test="${info.chtype eq 2}">国际短信</c:if><c:if test="${info.chtype eq 3}">其他未定义</c:if></th>
+            <td class="name">${info.channelid}</td>
+            <td class="process"><c:if test="${info.type eq 1}">联通</c:if><c:if test="${info.type eq 2}">电信</c:if><c:if test="${info.type eq 3}">全网</c:if></td>
+            <td class="node">${info.loginid}</td>
+            <td class="time">${info.corpid}</td>
+            <td class="node">${info.mtnum}</td>
+            <td class="time">${info.feenum}</td>
+            <td class="node">${info.feesuccess}</td>
+            <td class="time">${info.feefailure}</td>
+            <td class="operate">${info.statdate}</td>
             </tr>
         </c:forEach>
         </tbody>
@@ -96,7 +107,7 @@
     showRemind('input[type=text], textarea', 'placeholder');
     function searchA() {
         var date = document.getElementById("getdate").value;
-        location = "summary?page=${page}&date=" + date + "&pageSize=${pageSize}";
+        location = "traffic?page=${page}&date=" + date + "&pageSize=${pageSize}";
     }
 
     function clearA() {

@@ -450,4 +450,44 @@ public class YsSmsMt {
     public void setReportrespTime(Date reportrespTime) {
         this.reportrespTime = reportrespTime;
     }
+
+    private String timestr1;
+
+    private String timestr2;
+
+    private String timestr3;
+
+    private String timestr4;
+
+    public String getTimestr1() {
+        return timestr1;
+    }
+
+    public void setTimestr1(String timestr1) {
+        this.timestr1 = timestr1;
+    }
+
+    public String getTimestr2() {
+        return timestr2;
+    }
+
+    public void setTimestr2(String timestr2) {
+        this.timestr2 = timestr2;
+    }
+
+    public String getTimestr3() {
+        return timestr3;
+    }
+
+    public void setTimestr3(String timestr3) {
+        this.timestr3 = timestr3;
+    }
+
+    public String getTimestr4() {
+        return timestr4;
+    }
+
+    public void setTimestr4(String timestr4) {
+        this.timestr4 = timestr4;
+    }
 }

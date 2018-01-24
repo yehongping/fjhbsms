@@ -52,7 +52,7 @@
         <thead>
         <tr>
             <th class="num">序号</th>
-            <th class="name">端口</th>
+            <th class="name">发送号码</th>
             <th class="process">发送总数</th>
             <th class="node">状态报告总数</th>
             <th class="time">成功状态报告总数</th>
@@ -68,7 +68,7 @@
                 <tr style="background-color: rgb(239, 246, 250);">
             </c:if>
             <td class="num">${i.index+1+start}</td>
-            <td class="name">${info.srcPhone}</td>
+            <td class="name">${info.phone}</td>
             <td class="process">${info.num}</td>
             <td class="node">${info.rnum}</td>
             <td class="time">${info.rsnum}</td>
