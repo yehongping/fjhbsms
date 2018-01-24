@@ -157,14 +157,17 @@ public class SmsController {
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
             PageHelper.startPage(page, pageSize);
-            String sql = "select oidnew,to_char(putintime,'yyyy-mm-dd HH:mi:ss') timestr,putintime,phone,msgcont,uc,channelid,pri,pknum,pktotal,state,feenum,submitmsgid,rptstate,rptinfo,to_char(rptrecvtime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(submittime,'yyyy-mm-dd HH:mi:ss') timestr4,chpri,linkid from HKSMGATEWAY_SMS.mtsend_info";
+            String sql = "select oidnew,to_char(putintime,'yyyy-mm-dd HH:mi:ss') timestr1,putintime,phone,msgcont,uc,channelid,pri,pknum,pktotal,state,feenum,submitmsgid,rptstate,rptinfo,to_char(rptrecvtime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(submittime,'yyyy-mm-dd HH:mi:ss') timestr3,chpri,linkid from HKSMGATEWAY_SMS.mtsend_info";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
+                date = date.replaceAll("-", "");
                 sql += date;
             }
             if (StringUtils.isNotEmpty(phone))
                 sql += " where phone='" + phone + "'";
+            Long tiem1 = System.currentTimeMillis();
             List<Mtsend_Info> mtsend_infos = infoMapper.selectByParam(sql);
+            System.out.print("耗时"+(System.currentTimeMillis()-tiem1)+"ms\n");
             if (mtsend_infos.size() > 0) {
                 PageInfo<Mtsend_Info> infos = new PageInfo<>(mtsend_infos);
                 map.put("pages", infos.getPages());
@@ -198,6 +201,7 @@ public class SmsController {
             String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3,to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr4 from ys_sms_mt";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
+                date = date.replaceAll("-", "");
                 sql += "_" + date;
             }
             if (StringUtils.isNotEmpty(phone))

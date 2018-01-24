@@ -17,7 +17,7 @@
             <label>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期：</label>
             <div class="time-select">
                 <input type="text" id="getdate"
-                       onfocus="WdatePicker({$dpPath:'${ctxStatic}/js/',$dateFmt:'yyyyMMdd'})"
+                       onfocus="WdatePicker({$dpPath:'${ctxStatic}/js/',$dateFmt:'yyyy-MM-dd'})"
                        placeholder="统计日期" value="${date}">
                 <i class="icon"></i>
             </div>
@@ -91,9 +91,9 @@
     })
 
     $('.pagination').pagination(${total}, {
-
+        items_per_page:${pageSize},
         display_msg: true,
-        setPageNo: false,
+        setPageNo: true,
         current_page:${page-1},
         callback: function (page) {
             page += 1;

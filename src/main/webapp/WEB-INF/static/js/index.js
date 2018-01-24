@@ -20,7 +20,9 @@ $(".nav>.current").prev().css({"borderColor": "#7ac47f"});
 $(".nav").on("click", "li", function (e) {
     var aurl = $(this).find("a").attr("date-src");
     $("#iframe").attr("src", aurl);
+    $(this).parent(this).css({"background-color": "#dbe9f1"})
     $(".nav>li").css({"borderColor": "#dbe9f1"});
+    // $(this).css({"background-color": "#9090ff"});
     $(".nav>.current").prev().css({"borderColor": "#7ac47f"});
     return false;
 });

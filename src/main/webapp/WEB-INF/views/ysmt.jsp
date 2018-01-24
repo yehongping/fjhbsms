@@ -31,7 +31,7 @@
         <div class="conditions time ue-clear">
             <label>时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间：</label>
             <div class="time-select">
-                <input type="text" onfocus="WdatePicker({$dpPath:'${ctxStatic}/js/',dateFmt:'yyyyMMdd'})"
+                <input type="text" onfocus="WdatePicker({$dpPath:'${ctxStatic}/js/',dateFmt:'yyyy-MM-dd'})"
                        placeholder="开始时间" id="date" value="${date}">
                 <i class="icon"></i>
             </div>
@@ -53,7 +53,7 @@
         <thead>
         <tr>
             <th class="num">序号</th>
-            <th >端口</th>
+            <th>端口</th>
             <th class="name">发送号码</th>
             <th class="process">短信内容</th>
             <th class="node">长短信编号</th>
@@ -119,9 +119,9 @@
     })
     //
     $('.pagination').pagination(${total}, {
-
+        items_per_page:${pageSize},
         display_msg: true,
-        setPageNo: false,
+        setPageNo: true,
         current_page:${page-1},
         callback: function (page) {
             page += 1;
@@ -138,11 +138,15 @@
         var regPhone = /^1[0-9]{10}$/;
         var date = document.getElementById("date").value;
         var phone = document.getElementById("phone").value;
-        if (regPhone.test(phone)) {
-            location = "ysmt?page=${page}&date=" + date + "&phone=" + phone + "&pageSize=${pageSize}";
-        }
-        else if (!regPhone.test(phone) && phone != "") {
+        var ena = true;
+        if (phone != "" && !regPhone.test(phone)) {
+            ena = false;
             alert("手机号码格式不正常！");
+            return;
+
+        }
+        if (ena) {
+            location = "ysmt?page=${page}&date=" + date + "&phone=" + phone + "&pageSize=${pageSize}";
         }
     }
 

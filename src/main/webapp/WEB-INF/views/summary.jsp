@@ -83,9 +83,9 @@
     })
 
     $('.pagination').pagination(${total}, {
-
+        items_per_page:${pageSize},
         display_msg: true,
-        setPageNo: false,
+        setPageNo: true,
         current_page:${page-1},
         items_per_page:${pageSize},
         callback: function (page) {
