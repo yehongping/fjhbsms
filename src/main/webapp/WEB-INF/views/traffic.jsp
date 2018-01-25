@@ -36,7 +36,6 @@
             <th class="name">发送类型</th>
             <th class="name">频道号</th>
             <th class="name">类型</th>
-            <th class="process">运营商</th>
             <th class="node">登录ID</th>
             <th class="time">企业ID</th>
             <th class="time">发送数量</th>

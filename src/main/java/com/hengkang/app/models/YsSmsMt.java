@@ -459,6 +459,8 @@ public class YsSmsMt {
 
     private String timestr4;
 
+    private String timestr5;
+
     public String getTimestr1() {
         return timestr1;
     }
@@ -489,5 +491,13 @@ public class YsSmsMt {
 
     public void setTimestr4(String timestr4) {
         this.timestr4 = timestr4;
+    }
+
+    public String getTimestr5() {
+        return timestr5;
+    }
+
+    public void setTimestr5(String timestr5) {
+        this.timestr5 = timestr5;
     }
 }

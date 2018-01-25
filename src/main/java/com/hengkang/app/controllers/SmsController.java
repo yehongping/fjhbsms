@@ -69,7 +69,9 @@ public class SmsController {
     @RequestMapping("index")
     public String index(HttpSession session, ModelMap map) {
         Object userid = session.getAttribute("userid");
-        return "index";
+        if(userid != null)
+            return "index";
+        return "login";
     }
 
     @RequestMapping("summary")
@@ -198,7 +200,7 @@ public class SmsController {
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
             PageHelper.startPage(page, pageSize);
-            String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3,to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr4 from ys_sms_mt";
+            String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3, to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr5 from ys_sms_mt";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
