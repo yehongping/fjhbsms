@@ -26,4 +26,6 @@ public interface Traffic_StatisticsMapper {
     List<Traffic_Statistics> selectByParam(@Param("param")String param);
 
     int updateByParam(String param);
+
+    Integer count(@Param("param")String param);
 }

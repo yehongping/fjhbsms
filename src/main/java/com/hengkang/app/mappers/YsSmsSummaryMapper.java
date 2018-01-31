@@ -28,4 +28,6 @@ public interface YsSmsSummaryMapper {
 
     int updateByParam(String param);
 
+    Integer count(@Param("param")String param);
+
 }

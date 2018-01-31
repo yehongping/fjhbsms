@@ -69,7 +69,7 @@ public class SmsController {
     @RequestMapping("index")
     public String index(HttpSession session, ModelMap map) {
         Object userid = session.getAttribute("userid");
-        if(userid != null)
+        if (userid != null)
             return "index";
         return "login";
     }
@@ -83,21 +83,27 @@ public class SmsController {
                 pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
-            PageHelper.startPage(page, pageSize);
-            String sql = "select * from yssmgw_direct_ng.ys_sms_summary";
+            String sql = "select * from(select a.*,rownum ro from yssmgw_direct_ng.ys_sms_summary a where rownum <=" + limit + ") where ro >" + start;
+            String sql2 = "select count(*) from yssmgw_direct_ng.ys_sms_summary";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
                 sql += " where sdate='" + date + "'";
-            } else
+                sql2 += " where sdate='" + date + "'";
+            } else {
                 sql += " order by to_date(sdate,'yyyymmdd')  desc nulls last";
+                sql2 += " order by to_date(sdate,'yyyymmdd')  desc nulls last";;
+            }
             List<YsSmsSummary> ysSmsSummaries = summaryMapper.selectByParam(sql);
             if (ysSmsSummaries.size() > 0) {
-                PageInfo<YsSmsSummary> infos = new PageInfo<>(ysSmsSummaries);
-                map.put("pages", infos.getPages());
-                map.put("page", infos.getPageNum());
-                map.put("total", infos.getTotal());
-                map.put("infoList", infos.getList());
+                Integer total = summaryMapper.count(sql2);
+                Integer pages = total / pageSize;
+                if (total % pageSize > 0)
+                    pages += 1;
+                map.put("pages", pages);
+                map.put("page", page);
+                map.put("total", total);
+                map.put("infoList", ysSmsSummaries);
                 map.put("start", start);
                 map.put("limit", limit);
             } else {
@@ -120,25 +126,31 @@ public class SmsController {
                 pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
-            PageHelper.startPage(page, pageSize);
-            String sql = "select * from  HKSMGATEWAY_SMS.Traffic_Statistics";
+            String sql = "select * from(select a.*,rownum ro from HKSMGATEWAY_SMS.Traffic_Statistics a where rownum <=" + limit + ") where ro >" + start;
+            String sql2 = "select count(*) from HKSMGATEWAY_SMS.Traffic_Statistics";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
                 sql += " where STATDATE ='" + date + "'";
-            } else
+                sql2 += " where STATDATE ='" + date + "'";
+            } else {
                 sql += " order by to_date(statdate,'yyyymmdd') desc nulls last";
+                sql2 += " order by to_date(statdate,'yyyymmdd') desc nulls last";
+            }
             List<Traffic_Statistics> traffic_statistics = trafficMapper.selectByParam(sql);
             if (traffic_statistics.size() > 0) {
-                PageInfo<Traffic_Statistics> infos = new PageInfo<>(traffic_statistics);
-                map.put("pages", infos.getPages());
-                map.put("page", infos.getPageNum());
-                map.put("total", infos.getTotal());
-                map.put("infoList", infos.getList());
+                Integer total = trafficMapper.count(sql2);
+                Integer pages = total / pageSize;
+                if (total % pageSize > 0)
+                    pages += 1;
+                map.put("pages", pages);
+                map.put("page", page);
+                map.put("total", total);
+                map.put("infoList", traffic_statistics);
                 map.put("start", start);
                 map.put("limit", limit);
                 map.put("pageSize", pageSize);
-            }else {
+            } else {
                 map.put("total", 0);
                 map.put("page", 1);
             }
@@ -156,34 +168,41 @@ public class SmsController {
             if (page == null || page == 0) page = 1;
             if (pageSize == null)
                 pageSize = 25;
+            //查询条数
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
-            PageHelper.startPage(page, pageSize);
-            String sql = "select oidnew,to_char(putintime,'yyyy-mm-dd HH:mi:ss') timestr1,putintime,phone,msgcont,uc,channelid,pri,pknum,pktotal,state,feenum,submitmsgid,rptstate,rptinfo,to_char(rptrecvtime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(submittime,'yyyy-mm-dd HH:mi:ss') timestr3,chpri,linkid from HKSMGATEWAY_SMS.mtsend_info";
+            String sql = "select oidnew,to_char(putintime,'yyyy-mm-dd HH:mi:ss') timestr1,putintime,phone,msgcont,uc,channelid,pri,pknum,pktotal,state,feenum,submitmsgid,rptstate,rptinfo,to_char(rptrecvtime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(submittime,'yyyy-mm-dd HH:mi:ss') timestr3,chpri,linkid from(select a.*,rownum ro from HKSMGATEWAY_SMS.mtsend_info a where rownum <=" + limit + ") where ro >" + start;
+            String sql2 = "select count(*) from HKSMGATEWAY_SMS.mtsend_info";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
                 sql += date;
+                sql2 += date;
             }
-            if (StringUtils.isNotEmpty(phone))
+            if (StringUtils.isNotEmpty(phone)) {
                 sql += " where phone='" + phone + "'";
+                sql2 += " where phone='" + phone + "'";
+            }
             Long tiem1 = System.currentTimeMillis();
             List<Mtsend_Info> mtsend_infos = infoMapper.selectByParam(sql);
-            System.out.print("耗时"+(System.currentTimeMillis()-tiem1)+"ms\n");
+            System.out.print("耗时" + (System.currentTimeMillis() - tiem1) + "ms\n");
             if (mtsend_infos.size() > 0) {
-                PageInfo<Mtsend_Info> infos = new PageInfo<>(mtsend_infos);
-                map.put("pages", infos.getPages());
-                map.put("page", infos.getPageNum());
-                map.put("total", infos.getTotal());
-                map.put("infoList", infos.getList());
+                Integer total = infoMapper.count(sql2);
+                Integer pages = total / pageSize;
+                if (total % pageSize > 0)
+                    pages += 1;
+                map.put("pages", pages);
+                map.put("page", page);
+                map.put("total", total);
+                map.put("infoList", mtsend_infos);
                 map.put("start", start);
                 map.put("limit", limit);
                 map.put("pageSize", pageSize);
-            }else {
+            } else {
                 map.put("total", 0);
                 map.put("page", 1);
             }
-            map.put("phone",phone);
+            map.put("phone", phone);
             map.put("pageSize", pageSize);
             return "mtsend";
         }
@@ -199,30 +218,36 @@ public class SmsController {
                 pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
-            PageHelper.startPage(page, pageSize);
-            String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3, to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr5 from ys_sms_mt";
+            String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3, to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr5 from (select a.*,rownum ro from ys_sms_mt where rownum <=" + limit + ") where ro >" + start;
+            String sql2 = "select count(*) from ys_sms_mt";
             if (StringUtils.isNotEmpty(date)) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
                 sql += "_" + date;
+                sql2 += "_" + date;
             }
-            if (StringUtils.isNotEmpty(phone))
-                sql += " where dst_phone='" + phone + "'";
+            if (StringUtils.isNotEmpty(phone)) {
+                sql += " where phone='" + phone + "'";
+                sql2 += " where phone='" + phone + "'";
+            }
             List<YsSmsMt> ysSmsMts = mtMapper.selectByParam(sql);
             if (ysSmsMts.size() > 0) {
-                PageInfo<YsSmsMt> infos = new PageInfo<>(ysSmsMts);
-                map.put("pages", infos.getPages());
-                map.put("page", infos.getPageNum());
-                map.put("total", infos.getTotal());
-                map.put("infoList", infos.getList());
+                Integer total = mtMapper.count(sql2);
+                Integer pages = total / pageSize;
+                if (total % pageSize > 0)
+                    pages += 1;
+                map.put("pages", pages);
+                map.put("page", page);
+                map.put("total", total);
+                map.put("infoList", ysSmsMts);
                 map.put("start", start);
                 map.put("limit", limit);
                 map.put("pageSize", pageSize);
-            }else {
+            } else {
                 map.put("total", 0);
                 map.put("page", 1);
             }
-            map.put("phone",phone);
+            map.put("phone", phone);
             map.put("pageSize", pageSize);
             return "ysmt";
         }

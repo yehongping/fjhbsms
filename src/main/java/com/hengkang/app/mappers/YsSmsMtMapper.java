@@ -26,4 +26,6 @@ public interface YsSmsMtMapper {
     List<YsSmsMt> selectByParam(@Param("param")String param);
 
     int updateByParam(String param);
+
+    Integer count(@Param("param")String param);
 }

@@ -105,6 +105,9 @@
   <select id="selectByParam" parameterType="java.lang.String" resultMap="BaseResultMap">
     ${param}
   </select>
+  <select id="count" parameterType="java.lang.String" resultType="java.lang.Integer">
+    ${param}
+  </select>
   <update id="updateByParam" parameterType="java.lang.String">
     ${param}
   </update>

@@ -58,5 +58,7 @@ public interface Mtsend_InfoMapper {
 
     List<Mtsend_Info> selectByParam(@Param("param")String param);
 
+    Integer count(@Param("param")String param);
+
     int updateByParam(String param);
 }
