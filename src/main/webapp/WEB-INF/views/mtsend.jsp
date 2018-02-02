@@ -118,7 +118,7 @@
         callback: function (page) {
             page += 1;
 //            alert(page);
-            location = "mtsend?page=" + page + "&date=${date}&pageSize=${pageSize}";
+            location = "mtsend?page=" + page + "&phone=${phone}&date=${date}&pageSize=${pageSize}";
         }
     });
 

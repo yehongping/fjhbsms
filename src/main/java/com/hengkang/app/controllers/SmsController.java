@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,18 +85,21 @@ public class SmsController {
                 pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
-            String sql = "select * from(select a.*,rownum ro from yssmgw_direct_ng.ys_sms_summary a where rownum <=" + limit + ") where ro >" + start;
+            String sql = "select * from(select a.*,rownum ro from yssmgw_direct_ng.ys_sms_summary a where rownum <=" + limit;
             String sql2 = "select count(*) from yssmgw_direct_ng.ys_sms_summary";
-            if (StringUtils.isNotEmpty(date)) {
+            if (StringUtils.isNotEmpty(date) && !date.equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
-                sql += " where sdate='" + date + "'";
+                sql += " and sdate='" + date + "'";
                 sql2 += " where sdate='" + date + "'";
             } else {
                 sql += " order by to_date(sdate,'yyyymmdd')  desc nulls last";
-                sql2 += " order by to_date(sdate,'yyyymmdd')  desc nulls last";;
+                sql2 += " order by to_date(sdate,'yyyymmdd')  desc nulls last";
             }
+            sql += ") where ro >" + start;
+            Long tiem1 = System.currentTimeMillis();
             List<YsSmsSummary> ysSmsSummaries = summaryMapper.selectByParam(sql);
+            System.out.print("耗时" + (System.currentTimeMillis() - tiem1) + "ms\n");
             if (ysSmsSummaries.size() > 0) {
                 Integer total = summaryMapper.count(sql2);
                 Integer pages = total / pageSize;
@@ -126,18 +131,21 @@ public class SmsController {
                 pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
-            String sql = "select * from(select a.*,rownum ro from HKSMGATEWAY_SMS.Traffic_Statistics a where rownum <=" + limit + ") where ro >" + start;
+            String sql = "select * from(select a.*,rownum ro from HKSMGATEWAY_SMS.Traffic_Statistics a where rownum <=" + limit;
             String sql2 = "select count(*) from HKSMGATEWAY_SMS.Traffic_Statistics";
-            if (StringUtils.isNotEmpty(date)) {
+            if (StringUtils.isNotEmpty(date) && !date.equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
-                sql += " where STATDATE ='" + date + "'";
+                sql += " and STATDATE ='" + date + "'";
                 sql2 += " where STATDATE ='" + date + "'";
             } else {
                 sql += " order by to_date(statdate,'yyyymmdd') desc nulls last";
                 sql2 += " order by to_date(statdate,'yyyymmdd') desc nulls last";
             }
+            sql += ") where ro >" + start;
+            Long tiem1 = System.currentTimeMillis();
             List<Traffic_Statistics> traffic_statistics = trafficMapper.selectByParam(sql);
+            System.out.print("耗时" + (System.currentTimeMillis() - tiem1) + "ms\n");
             if (traffic_statistics.size() > 0) {
                 Integer total = trafficMapper.count(sql2);
                 Integer pages = total / pageSize;
@@ -171,18 +179,20 @@ public class SmsController {
             //查询条数
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
-            String sql = "select oidnew,to_char(putintime,'yyyy-mm-dd HH:mi:ss') timestr1,putintime,phone,msgcont,uc,channelid,pri,pknum,pktotal,state,feenum,submitmsgid,rptstate,rptinfo,to_char(rptrecvtime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(submittime,'yyyy-mm-dd HH:mi:ss') timestr3,chpri,linkid from(select a.*,rownum ro from HKSMGATEWAY_SMS.mtsend_info a where rownum <=" + limit + ") where ro >" + start;
+            String sql = "select oidnew,to_char(putintime,'yyyy-mm-dd HH:mi:ss') timestr1,putintime,phone,msgcont,uc,channelid,pri,pknum,pktotal,state,feenum,submitmsgid,rptstate,rptinfo,to_char(rptrecvtime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(submittime,'yyyy-mm-dd HH:mi:ss') timestr3,chpri,linkid from(select a.*,rownum ro from HKSMGATEWAY_SMS.mtsend_info";
             String sql2 = "select count(*) from HKSMGATEWAY_SMS.mtsend_info";
-            if (StringUtils.isNotEmpty(date)) {
+            if (StringUtils.isNotEmpty(date) && !date.equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
                 sql += date;
                 sql2 += date;
             }
+            sql += " a where";
             if (StringUtils.isNotEmpty(phone)) {
-                sql += " where phone='" + phone + "'";
+                sql += "  phone='" + phone + "' and";
                 sql2 += " where phone='" + phone + "'";
             }
+            sql += "  rownum <=" + limit + ") where ro >" + start;
             Long tiem1 = System.currentTimeMillis();
             List<Mtsend_Info> mtsend_infos = infoMapper.selectByParam(sql);
             System.out.print("耗时" + (System.currentTimeMillis() - tiem1) + "ms\n");
@@ -218,9 +228,9 @@ public class SmsController {
                 pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
-            String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3, to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr5 from (select a.*,rownum ro from ys_sms_mt where rownum <=" + limit + ") where ro >" + start;
+            String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3, to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr5 from (select a.*,rownum ro from ys_sms_mt a where rownum <=" + limit + ") where ro >" + start;
             String sql2 = "select count(*) from ys_sms_mt";
-            if (StringUtils.isNotEmpty(date)) {
+            if (StringUtils.isNotEmpty(date) && !date.equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
                 map.put("date", date);
                 date = date.replaceAll("-", "");
                 sql += "_" + date;
@@ -230,7 +240,9 @@ public class SmsController {
                 sql += " where phone='" + phone + "'";
                 sql2 += " where phone='" + phone + "'";
             }
+            Long tiem1 = System.currentTimeMillis();
             List<YsSmsMt> ysSmsMts = mtMapper.selectByParam(sql);
+            System.out.print("耗时" + (System.currentTimeMillis() - tiem1) + "ms\n");
             if (ysSmsMts.size() > 0) {
                 Integer total = mtMapper.count(sql2);
                 Integer pages = total / pageSize;

@@ -124,7 +124,7 @@
         callback: function (page) {
             page += 1;
 //            alert(page);
-            location = "ysmt?page=" + page + "&date=${date}&pageSize=${pageSize}";
+            location = "ysmt?page=" + page + "&phone=${phone}&date=${date}&pageSize=${pageSize}";
         }
     });
 

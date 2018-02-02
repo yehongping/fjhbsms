@@ -6,6 +6,7 @@
 
     <groupId>fjhbsms</groupId>
     <artifactId>fjhbsms</artifactId>
+    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>fjhbsms</name>
 
