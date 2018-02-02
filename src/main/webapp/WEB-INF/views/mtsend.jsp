@@ -138,7 +138,7 @@
 
         }
         if (ena) {
-            location = "mtsend?page=${page}&date=" + date + "&phone=" + phone + "&pageSize=${pageSize}";
+            location = "mtsend?date=" + date + "&phone=" + phone + "&pageSize=${pageSize}";
         }
     }
 

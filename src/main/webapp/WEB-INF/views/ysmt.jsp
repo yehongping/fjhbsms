@@ -144,7 +144,7 @@
 
         }
         if (ena) {
-            location = "ysmt?page=${page}&date=" + date + "&phone=" + phone + "&pageSize=${pageSize}";
+            location = "ysmt?date=" + date + "&phone=" + phone + "&pageSize=${pageSize}";
         }
     }
 

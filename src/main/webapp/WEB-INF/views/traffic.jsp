@@ -106,7 +106,7 @@
     showRemind('input[type=text], textarea', 'placeholder');
     function searchA() {
         var date = document.getElementById("getdate").value;
-        location = "traffic?page=${page}&date=" + date + "&pageSize=${pageSize}";
+        location = "traffic?date=" + date + "&pageSize=${pageSize}";
     }
 
     function clearA() {
