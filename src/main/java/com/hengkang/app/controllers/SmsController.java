@@ -1,7 +1,5 @@
 package com.hengkang.app.controllers;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.hengkang.app.mappers.Mtsend_InfoMapper;
 import com.hengkang.app.mappers.Traffic_StatisticsMapper;
 import com.hengkang.app.mappers.YsSmsMtMapper;
@@ -19,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -77,12 +76,9 @@ public class SmsController {
     }
 
     @RequestMapping("summary")
-    public String summery(HttpSession session, ModelMap map, Integer page, String date, Integer pageSize) {
+    public String summery(HttpSession session, ModelMap map, @RequestParam(value = "page",defaultValue = "1") Integer page, String date, @RequestParam(value = "pageSize",defaultValue = "25") Integer pageSize) {
         Object userid = session.getAttribute("userid");
         if (userid != null) {
-            if (page == null || page == 0) page = 1;
-            if (pageSize == null)
-                pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
             String sql = "select * from(select a.*,rownum ro from yssmgw_direct_ng.ys_sms_summary a where rownum <=" + limit;
@@ -123,12 +119,9 @@ public class SmsController {
 
 
     @RequestMapping("traffic")
-    public String staffic(HttpSession session, ModelMap map, String date, Integer page, Integer pageSize) {
+    public String staffic(HttpSession session, ModelMap map, String date, @RequestParam(value = "page",defaultValue = "1")Integer page, @RequestParam(value = "pageSize",defaultValue = "25") Integer pageSize) {
         Object userid = session.getAttribute("userid");
         if (userid != null) {
-            if (page == null || page == 0) page = 1;
-            if (pageSize == null)
-                pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
             String sql = "select * from(select a.*,rownum ro from HKSMGATEWAY_SMS.Traffic_Statistics a where rownum <=" + limit;
@@ -170,12 +163,9 @@ public class SmsController {
 
 
     @RequestMapping("mtsend")
-    public String mtsend(HttpSession session, ModelMap map, String date, String phone, Integer page, Integer pageSize) {
+    public String mtsend(HttpSession session, ModelMap map, String date, String phone, @RequestParam(value = "page",defaultValue = "1") Integer page, @RequestParam(value = "pageSize",defaultValue = "25") Integer pageSize) {
         Object userid = session.getAttribute("userid");
         if (userid != null) {
-            if (page == null || page == 0) page = 1;
-            if (pageSize == null)
-                pageSize = 25;
             //查询条数
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
@@ -220,12 +210,9 @@ public class SmsController {
     }
 
     @RequestMapping("ysmt")
-    public String ysmt(HttpSession session, ModelMap map, String date, String phone, Integer page, Integer pageSize) {
+    public String ysmt(HttpSession session, ModelMap map, String date, String phone, @RequestParam(value = "page",defaultValue = "1")Integer page, @RequestParam(value = "pageSize",defaultValue = "25") Integer pageSize) {
         Object userid = session.getAttribute("userid");
         if (userid != null) {
-            if (page == null || page == 0) page = 1;
-            if (pageSize == null)
-                pageSize = 25;
             Integer limit = page * pageSize;
             Integer start = (page - 1) * pageSize;
             String sql = "select dst_phone,sms,pksessioinlog,pktotal,pknumber,dst_term,userid,msgid,respmsgid,state,to_char(createtime,'yyyy-mm-dd HH:mi:ss') timestr1,to_char(resptime,'yyyy-mm-dd HH:mi:ss') timestr2,to_char(reporttime,'yyyy-mm-dd HH:mi:ss') timestr3, to_char(reportresp_time,'yyyy-mm-dd HH:mi:ss') timestr5 from (select a.*,rownum ro from ys_sms_mt a where rownum <=" + limit + ") where ro >" + start;
