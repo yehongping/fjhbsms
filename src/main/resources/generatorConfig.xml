@@ -53,7 +53,7 @@
                <!--enableDeleteByExample="false"-->
                <!--enableSelectByExample="false"-->
                <!--enableUpdateByExample="false"/>-->
-        <table tableName="HKSMGATEWAY_SMS.mtsend_info" domainObjectName="Mtsend_Info"
+        <table tableName="corplogin" domainObjectName="CorpLogin"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"

@@ -4,7 +4,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>移动办公自动化系统</title>
+    <title>宇顺短信查询系统</title>
     <link rel="stylesheet" href="${ctxStatic}/css/base.css"/>
     <link rel="stylesheet" href="${ctxStatic}/css/info-mgt.css"/>
     <link rel="stylesheet" href="${ctxStatic}/css/WdatePicker.css"/>
