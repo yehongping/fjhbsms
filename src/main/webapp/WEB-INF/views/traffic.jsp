@@ -10,16 +10,44 @@
     <link rel="stylesheet" href="${ctxStatic}/css/WdatePicker.css"/>
 </head>
 <body>
-<div class="title"><h2>信息管理>联诚端口发送统计</h2></div>
+<div class="title"><h2>信息管理>端口发送统计</h2></div>
 <div class="query">
     <div class="query-conditions ue-clear">
         <div class="conditions time ue-clear">
-            <label>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期：</label>
+            <label>开始日期：</label>
             <div class="time-select">
                 <input type="text" id="getdate"
                        onfocus="WdatePicker({$dpPath:'${ctxStatic}/js/',$dateFmt:'yyyy-MM-dd'})"
                        placeholder="统计日期" value="${date}">
                 <i class="icon"></i>
+            </div>
+            </br>
+            <label>结束日期：</label>
+            <div class="time-select">
+                <input type="text" id="getdate1"
+                       onfocus="WdatePicker({$dpPath:'${ctxStatic}/js/',$dateFmt:'yyyy-MM-dd'})"
+                       placeholder="统计日期" value="${date1}">
+                <i class="icon"></i>
+            </div>
+        </div>
+        <div class="conditions channal">
+            <label>运&nbsp;&nbsp;营&nbsp;&nbsp;商：</label>
+            <div class="time-select">
+                <select id="channal">
+                    <option value="">不&nbsp;&nbsp;&nbsp;限</option>
+                    <option value="0">移&nbsp;&nbsp;&nbsp;动</option>
+                    <option value="1">联&nbsp;&nbsp;&nbsp;通</option>
+                    <option value="2">电&nbsp;&nbsp;&nbsp;信</option>
+                    <option value="3">全&nbsp;&nbsp;&nbsp;网</option>
+                </select>
+            </div>
+            <label>操作结果：</label>
+            <div class="time-select">
+                <select id="sufa">
+                    <option value="2">不&nbsp;&nbsp;&nbsp;限</option>
+                    <option value="0">有失败</option>
+                    <option value="1">全成功</option>
+                </select>
             </div>
         </div>
         <div class="query-btn ue-clear">
@@ -33,13 +61,8 @@
         <thead>
         <tr>
             <th class="num">序号</th>
-            <th class="name">发送类型</th>
-            <th class="name">频道号</th>
             <th class="name">类型</th>
-            <th class="node">登录ID</th>
-            <th class="time">企业ID</th>
             <th class="time">发送数量</th>
-            <th class="time">计费数量</th>
             <th class="time">成功数量</th>
             <th class="time">失败数量</th>
             <th class="operate">统计日期</th>
@@ -54,13 +77,9 @@
                 <tr style="background-color: rgb(239, 246, 250);">
             </c:if>
             <td class="num">${i.index+1+start}</td>
-            <th class="name"><c:if test="${info.chtype eq 0}">短信</c:if><c:if test="${info.chtype eq 1}">彩信</c:if><c:if test="${info.chtype eq 2}">国际短信</c:if><c:if test="${info.chtype eq 3}">其他未定义</c:if></th>
-            <td class="name">${info.channelid}</td>
-            <td class="process"><c:if test="${info.type eq 1}">联通</c:if><c:if test="${info.type eq 2}">电信</c:if><c:if test="${info.type eq 3}">全网</c:if></td>
-            <td class="node">${info.loginid}</td>
-            <td class="time">${info.corpid}</td>
+            <td class="process"><c:if test="${info.type eq 0}">移动</c:if><c:if test="${info.type eq 1}">联通</c:if><c:if
+                    test="${info.type eq 2}">电信</c:if><c:if test="${info.type eq 3}">全网</c:if></td>
             <td class="node">${info.mtnum}</td>
-            <td class="time">${info.feenum}</td>
             <td class="node">${info.feesuccess}</td>
             <td class="time">${info.feefailure}</td>
             <td class="operate">${info.statdate}</td>
@@ -97,20 +116,41 @@
         callback: function (page) {
             page += 1;
 //            alert(page);
-            location = "traffic?page=" + page + "&date=${date}&pageSize=${pageSize}";
+            location = "traffic?page=" + page + "&date=${date}&date1=${date1}&channal=${channal}&sufa=${sufa}&pageSize=${pageSize}";
         }
     });
 
     $("tbody").find("tr:odd").css("backgroundColor", "#eff6fa");
 
     showRemind('input[type=text], textarea', 'placeholder');
+    $(function () {
+        setSelected("channal", "${channal}");
+        setSelected("sufa", "${sufa}");
+
+    })
     function searchA() {
         var date = document.getElementById("getdate").value;
-        location = "traffic?date=" + date + "&pageSize=${pageSize}";
+        var date1 = document.getElementById("getdate1").value;
+        var channal = $("#channal").val();
+        var sufa = $("#sufa").val();
+        location = "traffic?date=" + date + "&date1=" + date1 + "&channal=" + channal + "&sufa=" + sufa + "&pageSize=${pageSize}";
     }
 
     function clearA() {
-       document.getElementById("getdate").value = "";
+        document.getElementById("getdate").value = "";
+        document.getElementById("getdate1").value = "";
+        setSelected("channal", "");
+        setSelected("sufa", "");
+    }
+
+    function setSelected(id, value) {
+        var obj = document.getElementById(id);
+        for (var i = 0; i < obj.length; i++) {
+            if (obj[i].value == value) {
+                obj[i].selected = true;
+                break;
+            }
+        }
     }
 </script>
 </html>

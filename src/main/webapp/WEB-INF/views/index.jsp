@@ -34,14 +34,14 @@
                         <ul class="subnav">
                             <li><a href="javascript:;" date-src="summary">腾讯端口发送统计</a></li>
                             <li><a href="javascript:;" date-src="traffic">联诚端口发送统计</a></li>
-                            <li><a href="javascript:;" date-src="mtsend">联诚侧宇顺联通、移动电信营销端口日发送短信</a></li>
-                            <li><a href="javascript:;" date-src="ysmt">宇顺移动电信功能性端口统计</a></li>
+                            <li><a href="javascript:;" date-src="mtsend">联诚宇顺端口日发送短信</a></li>
+                            <li><a href="javascript:;" date-src="ysmt">宇顺功能性端口统计</a></li>
                         </ul>
                     </li>
              </ul>
             </div>
             <div class="content">
-                <iframe src="summary" id="iframe" width="100%" height="100%" frameborder="0" style="height: 850px;"></iframe>
+                <iframe src="" id="iframe" width="100%" height="100%" frameborder="0" style="height: 850px;"></iframe>
             </div>
         </div>
     </div>

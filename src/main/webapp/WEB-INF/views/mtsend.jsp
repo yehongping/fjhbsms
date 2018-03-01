@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${ctxStatic}/css/WdatePicker.css"/>
 </head>
 <body>
-<div class="title"><h2>信息管理>联诚侧宇顺联通、移动电信营销端口日发送短信</h2></div>
+<div class="title"><h2>信息管理>端口日发送短信</h2></div>
 <div class="query">
     <div class="query-conditions ue-clear">
         <%--<div class="conditions operate-time ue-clear">--%>
@@ -23,10 +23,10 @@
         <%--<li>嘻嘻</li>--%>
         <%--</ul>--%>
         <%--</div>--%>
-        <%--<div class="input-box ue-clear">--%>
-        <%--<input type="text">--%>
-        <%--<span>小时</span>--%>
-        <%--</div>--%>
+            <%--<div class="input-box ue-clear">--%>
+                <%--<input type="text">--%>
+                <%--<span>小时</span>--%>
+            <%--</div>--%>
         <%--</div>--%>
         <div class="conditions time ue-clear">
             <label>时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间：</label>
@@ -37,7 +37,7 @@
         </div>
         <div class="conditions staff ue-clear">
             <label>手机号：</label>
-            <input type="text" placeholder="可以直接输入手机号" id="phone" value="${phone}">
+            <input type="text" placeholder="输入手机号" id="phone" value="${phone}">
             <%--<a href="javascript:;" class="staff-select">选择</a>--%>
         </div>
         <div class="query-btn ue-clear">
@@ -52,7 +52,7 @@
         <thead>
         <tr>
             <th class="num">序号</th>
-            <th class="time">用户</th>
+            <%--<th class="time">用户</th>--%>
             <th class="name">发送号码</th>
             <th class="process">发送短信</th>
             <th class="node">长号码</th>
@@ -74,7 +74,7 @@
                 <tr style="background-color: rgb(239, 246, 250);">
             </c:if>
             <td class="num">${i.index+1+start}</td>
-            <td class="name">${info.loginid}</td>
+            <%--<td class="name">${info.loginid}</td>--%>
             <td class="name">${info.phone}</td>
             <td class="process">${info.msgcont}</td>
             <td class="node">${info.uc}</td>

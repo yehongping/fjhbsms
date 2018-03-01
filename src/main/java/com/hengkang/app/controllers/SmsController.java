@@ -6,7 +6,6 @@ import com.hengkang.app.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,7 +91,7 @@ public class SmsController {
         if (userid != null) {
             if (utype.equals(0))
                 return "index";
-            return  "uindex";
+            return "uindex";
         }
         return "login";
     }
@@ -141,7 +140,7 @@ public class SmsController {
 
 
     @RequestMapping("traffic")
-    public String staffic(HttpSession session, ModelMap map, String date, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "pageSize", defaultValue = "25") Integer pageSize) {
+    public String staffic(HttpSession session, ModelMap map, String date, String date1, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "pageSize", defaultValue = "25") Integer pageSize, Short channal, @RequestParam(value = "sufa", defaultValue = "2") Short sufa) {
         Object userid = session.getAttribute("loginid");
         Object utype = session.getAttribute("utype");
         Integer limit = page * pageSize;
@@ -150,32 +149,60 @@ public class SmsController {
         String sql2 = "";
         if (userid != null) {
             if (utype.equals(1)) {
-                sql = "select * from(select a.*,rownum ro from HKSMGATEWAY_SMS.Traffic_Statistics a where loginid=" + userid + " and rownum <=" + limit;
+                sql = "select * from(select a.type,a.mtnum,a.feesuccess,a.feefailure,a.statdate,rownum ro from HKSMGATEWAY_SMS.Traffic_Statistics a where loginid=" + userid + " and rownum <=" + limit;
                 sql2 = "select count(*) from HKSMGATEWAY_SMS.Traffic_Statistics where loginid=" + userid;
-                if (StringUtils.isNotEmpty(date) && !date.equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
-                    map.put("date", date);
-                    date = date.replaceAll("-", "");
-                    sql += " and STATDATE ='" + date + "'";
-                    sql2 += " where STATDATE ='" + date + "'";
-                } else {
-                    sql += " order by to_date(statdate,'yyyymmdd') desc nulls last";
-                    sql2 += " order by to_date(statdate,'yyyymmdd') desc nulls last";
-                }
-                sql += ") where ro >" + start;
-            } else if (utype.equals(0)) {
+            } else {
                 sql = "select * from(select a.*,rownum ro from HKSMGATEWAY_SMS.Traffic_Statistics a where rownum <=" + limit;
-                sql2 = "select count(*) from HKSMGATEWAY_SMS.Traffic_Statistics";
-                if (StringUtils.isNotEmpty(date) && !date.equals(new SimpleDateFormat("yyyy-MM-dd").format(new Date()))) {
-                    map.put("date", date);
-                    date = date.replaceAll("-", "");
-                    sql += " and STATDATE ='" + date + "'";
-                    sql2 += " where STATDATE ='" + date + "'";
-                } else {
-                    sql += " order by to_date(statdate,'yyyymmdd') desc nulls last";
-                    sql2 += " order by to_date(statdate,'yyyymmdd') desc nulls last";
-                }
-                sql += ") where ro >" + start;
+                sql2 = "select count(*) from HKSMGATEWAY_SMS.Traffic_Statistics where 1=1";
             }
+            if (StringUtils.isNotEmpty(date) || StringUtils.isNotEmpty(date1) || channal != null || sufa != null) {
+                if (StringUtils.isNotEmpty(date) || StringUtils.isNotEmpty(date1)) {
+                    map.put("date", date);
+                    map.put("date1", date1);
+                    if (StringUtils.isNotEmpty(date) && StringUtils.isEmpty(date1)) {
+                        date = date.replaceAll("-", "");
+                        sql += " and STATDATE like '" + date + "%'";
+                        sql2 += " and STATDATE like '" + date + "%'";
+                    } else if (StringUtils.isEmpty(date) && StringUtils.isNotEmpty(date1)) {
+                        date1 = date1.replaceAll("-", "");
+                        sql += " and STATDATE like '" + date1 + "%'";
+                        sql2 += " and STATDATE like '" + date1 + "%'";
+                    } else {
+                        //开始结束日期都不为空
+                        date = date.replaceAll("-", "");
+                        date1 = date1.replaceAll("-", "");
+                        Integer a = Integer.parseInt(date);
+                        Integer b = Integer.parseInt(date1);
+                        if(b>a) {
+                            sql += " and STATDATE between " + date + " and " + date1;
+                            sql2 += " and STATDATE between " + date + " and " + date1;
+                        }else{
+                            sql += " and STATDATE between " + date1 + " and " + date;
+                            sql2 += " and STATDATE between " + date1 + " and " + date;
+                        }
+                    }
+                }
+
+                if (channal != null) {
+                    map.put("channal", channal);
+                    sql += " and type=" + channal;
+                    sql2 += " and type=" + channal;
+                }
+                if (sufa == 0) {
+                    map.put("sufa", sufa);
+                    sql += " and feefailure>0";
+                    sql2 += " and feefailure>0";
+                } else if (sufa == 1) {
+                    map.put("sufa", sufa);
+                    sql += " and feefailure=0";
+                    sql2 += " and feefailure=0";
+                }
+            } else {
+                sql += " order by to_date(statdate,'yyyymmdd') desc nulls last";
+                sql2 += " order by to_date(statdate,'yyyymmdd') desc nulls last";
+            }
+            sql += ") where ro >" + start;
+
             Long tiem1 = System.currentTimeMillis();
             List<Traffic_Statistics> traffic_statistics = trafficMapper.selectByParam(sql);
             System.out.print("耗时" + (System.currentTimeMillis() - tiem1) + "ms\n");
@@ -223,7 +250,7 @@ public class SmsController {
                 sql += " a where loginid=" + userid;
                 sql2 += " where loginid=" + userid;
                 if (StringUtils.isNotEmpty(phone)) {
-                    sql += "  phone='" + phone + "' and";
+                    sql += " and phone='" + phone + "'";
                     sql2 += " and phone='" + phone + "'";
                 }
                 sql += " and rownum <=" + limit + ") where ro >" + start;
